@@ -508,28 +508,7 @@
           const docRef = await addDoc(collection(db, 'registrations'), registrationData);
           console.log('Registration saved:', docRef.id);
 
-          // Send email
-          if (typeof emailjs !== 'undefined') {
-            const EN = {
-              mun:'Model United Nations', moot_court:'Moot Court', hackathon:'Hackathon',
-              debate:'Conventional Debate', spark_tank:'Spark Tank', marketing:'Marketing',
-              paper_trading:'Paper Trading', film_making:'Film Making', Navras:'Navras',
-              poetry:'Poetry', raag_jaam:'Raag Jaam', ipl:'IPL'
-            };
-            const teamList = teamMembers.map((m,i) => `${i+1}. ${m.firstName} ${m.lastName} (${m.email})`).join('\n');
-            try {
-              await emailjs.send('service_1fxd5y7', 'template_09rbyci', {
-                to_name: registrationData.firstName + ' ' + registrationData.lastName,
-                to_email: registrationData.email,
-                event_name: EN[registrationData.event] || registrationData.event,
-                team_size: registrationData.teamSize,
-                team_members: teamList,
-                registration_id: docRef.id,
-                school: registrationData.school,
-                city: registrationData.city
-              });
-            } catch (emailErr) { console.warn('Email failed:', emailErr); }
-          }
+          // EmailJS removed: Emails will only be sent upon Admin approval/rejection.
 
           // Clear session
           sessionStorage.removeItem('nydc_registration');
